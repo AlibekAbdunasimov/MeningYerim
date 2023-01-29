@@ -20,7 +20,7 @@ const user = {
 
     /**
      * @desc    Get user profile
-     * @route   GET /api/users/profile
+     * @route   GET /api/users
      * @access  Private
      */
     getUser: expressAsyncHandler(async (req, res) => {
@@ -88,7 +88,7 @@ const user = {
         } else
             res.status(400).json({
                 success: false,
-                message: [{ msg: 'User not found', param: 'email' }],
+                message: [{ msg: 'User not found', param: 'phone' }],
             })
     }),
 

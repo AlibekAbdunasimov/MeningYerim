@@ -1,39 +1,71 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { encode } from 'js-base64'
-import { apiPcStore, user, userReg } from './../api'
+import {createSlice} from '@reduxjs/toolkit'
+import {encode} from 'js-base64'
+import {apiLand, user, userReg} from '../api'
 
 const login = createSlice({
     name: 'user',
-    initialState: { isLoading: false, user: '', success: false },
+    initialState: {
+        message: [],
+        isLoading: false,
+        user: '',
+        success: false,
+        successReg: false,
+        localStorageState: false
+    },
     reducers: {
-        onStart: state => (state.isLoading = true),
-        onSuccess: (state, { payload }) => {
+        onStart: state => {
+            state.isLoading = true
+            state.success = false
+        },
+        onSuccess: (state, {payload}) => {
             localStorage.setItem('token', encode(payload?.data?.token))
             state.isLoading = false
+            state.localStorageState = !state.localStorageState
             state.success = payload.success
         },
-        userProfile: (state, { payload }) => {
+        userProfile: (state, {payload}) => {
             state.isLoading = false
-            state.user = payload.data
-            state.success = payload.success
+            state.user = payload
         },
-        userUpdate: (state, { payload }) => {
+        userRegister: (state, {payload}) => {
+            state.isLoading = false
+            state.user = payload
+        },
+        onSuccessReg: (state, {payload}) => {
+            state.isLoading = false
+            state.successReg = payload.success
+        },
+        userUpdate: (state, {payload}) => {
             state.isLoading = false
             state.success = payload.success
         },
-        userDelete: (state, { payload }) => {
+        userDelete: (state, {payload}) => {
             state.isLoading = false
             state.success = payload.success
         },
-        onFail: (state, { payload }) => {
+        onFail: (state, {payload}) => {
             state.isLoading = false
             state.success = payload.success
+            state.successReg = payload.success
+            state.message = [...payload?.response?.data?.message ]
         },
+        logout: (state) => {
+            localStorage.clear();
+            state.user = ""
+            state.success = false
+            state.successReg = false
+            state.localStorageState = !state.localStorageState;
+        },
+        stateReset: (state) => {
+            state.successReg = false;
+            state.success = false;
+            state.message = [];
+        }
     },
 })
 
 export const userLogin = data =>
-    apiPcStore({
+    apiLand({
         url: user,
         method: 'post',
         data,
@@ -43,17 +75,17 @@ export const userLogin = data =>
     })
 
 export const userRegister = data =>
-    apiPcStore({
+    apiLand({
         url: userReg,
         method: 'post',
         data,
         onStart: login.actions.onStart.type,
-        onSuccess: login.actions.onSuccess.type,
+        onSuccess: login.actions.onSuccessReg.type,
         onFail: login.actions.onFail.type,
     })
 
 export const userProfile = () =>
-    apiPcStore({
+    apiLand({
         url: user,
         method: 'get',
         onStart: login.actions.onStart.type,
@@ -62,7 +94,7 @@ export const userProfile = () =>
     })
 
 export const userUpdate = data =>
-    apiPcStore({
+    apiLand({
         url: user,
         method: 'put',
         data,
@@ -72,7 +104,7 @@ export const userUpdate = data =>
     })
 
 export const userDelete = data =>
-    apiPcStore({
+    apiLand({
         url: user,
         method: 'post',
         data,
@@ -82,3 +114,4 @@ export const userDelete = data =>
     })
 
 export default login.reducer
+export const {logout, stateReset} = login.actions;

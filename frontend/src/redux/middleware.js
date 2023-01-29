@@ -5,7 +5,7 @@ const middleware =
     ({ dispatch }) =>
     next =>
     action => {
-        if (action.type !== 'apiPcStore') {
+        if (action.type !== 'apiLand') {
             next(action)
             return
         }

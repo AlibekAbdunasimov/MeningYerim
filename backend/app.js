@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }))
 // app.use('/images', express.static('images'))  // /images bosa baseURL/images/imageURL
 app.use(express.static('images')) // bunda baseURL/imageURL
 
-app.get('/', (req, res) => res.render('index'))
+app.get('/', (req, res) => res.send('hello world'))
 app.use('/user', userRoute)
 app.use('/lands', landRoute)
 

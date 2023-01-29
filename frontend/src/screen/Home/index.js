@@ -1,5 +1,14 @@
+import { Fragment } from 'react'
+import Header from './Header'
+import Lands from './Lands'
+
 const Home = () => {
-    return <div>Home</div>
+    return (
+        <Fragment>
+            <Header />
+            <Lands />
+        </Fragment>
+    )
 }
 
 export default Home

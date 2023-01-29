@@ -1,9 +1,9 @@
 import { createAction } from '@reduxjs/toolkit'
 
-export const apiPcStore = createAction('apiPcStore')
+export const apiLand = createAction('apiLand')
 
 export const user = 'user'
 export const userReg = 'user/register'
 
-export const land = 'land'
-export const landId = id => `land/${id}`
+export const land = 'lands'
+export const landId = id => `lands/${id}`

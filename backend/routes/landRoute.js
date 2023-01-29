@@ -5,7 +5,10 @@ import landController from './../controllers/landController.js'
 
 const router = express.Router()
 
-router.route('/').get(landController.getLands).post(protect, landField, landController.addLand)
+router
+    .route('/')
+    .get(landController.getLands)
+    .post(protect, landField, landController.addLand)
 router
     .route('/:id')
     .get(landController.getLand)
